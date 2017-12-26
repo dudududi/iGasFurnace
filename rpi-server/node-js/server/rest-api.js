@@ -4,23 +4,23 @@ const bodyParser = require('body-parser');
 const app = require('./server-utils').serverApp;
 
 function defineApi(repository) {
-    router.route('/temperatures/exterior')
+    router.route('/temperatures/outdoor')
         .get(function (req, res) {
             let timestampFrom = req.query.timestampFrom;
             let timestampTo = req.query.timestampTo;
 
-            repository.getTemperatures(repository.TemperatureType.EXTERIOR, timestampFrom, timestampTo)
+            repository.getTemperatures(repository.TemperatureType.OUTDOOR, timestampFrom, timestampTo)
                 .then((results) => {
                     res.status(200).json(results);
                 });
         });
 
-    router.route('/temperatures/interior')
+    router.route('/temperatures/indoor')
         .get(function (req, res) {
             let timestampFrom = req.query.timestampFrom;
             let timestampTo = req.query.timestampTo;
 
-            repository.getTemperatures(repository.TemperatureType.INTERIOR, timestampFrom, timestampTo)
+            repository.getTemperatures(repository.TemperatureType.INDOOR, timestampFrom, timestampTo)
                 .then((results) => {
                     res.status(200).json(results);
                 });
@@ -45,7 +45,7 @@ function defineApi(repository) {
         .post(function (req, res) {
             let timestamp = req.body.timestamp;
             let value = req.body.value;
-            let type = req.params.type === "exterior" ? repository.TemperatureType.EXTERIOR : repository.TemperatureType.INTERIOR;
+            let type = req.params.type === "outdoor" ? repository.TemperatureType.OUTDOOR : repository.TemperatureType.INDOOR;
             repository.saveTemperature(type, value, timestamp)
                 .then(() => res.status(200).json("ok"));
         });

@@ -6,7 +6,7 @@ class Repository {
     /**
      * Saves current temperature at given date and time to db.
      *
-     * @param {String} type of temperature to be saved, can be "INTERIOR" or "EXTERIOR", mandatory
+     * @param {String} type of temperature to be saved, can be "INDOOR" or "OUTDOOR", mandatory
      * @param {Number} temperature's value to be saved, mandatory
      * @param {Number} timestamp of temperature's which is being saved (usually Date.now()), mandatory
      */
@@ -25,7 +25,7 @@ class Repository {
     /**
      * Fetch list of temperatures within given dates.
      *
-     * @param {String} type of temperature to be saved, can be "INTERIOR" or "EXTERIOR", mandatory
+     * @param {String} type of temperature to be saved, can be "INDOOR" or "OUTDOOR", mandatory
      * @param {Number} timestampFrom - date from which temperatures should be returned in timestamp format, optional
      * @param {Number} timestampTo - date to which temperatures should be returned in timestamp format, optional.
      */
@@ -99,12 +99,12 @@ class Repository {
 }
 
 class TemperatureType {
-    static get INTERIOR() {
-        return "interior";
+    static get INDOOR() {
+        return "indoor";
     }
 
-    static get EXTERIOR() {
-        return "exterior";
+    static get OUTDOOR() {
+        return "outdoor";
     }
 }
 module.exports = Repository;
