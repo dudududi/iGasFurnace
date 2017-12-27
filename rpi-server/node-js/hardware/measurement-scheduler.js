@@ -1,32 +1,50 @@
+const mongoose = require('mongoose');
+
 const TemperatureSensor = require('./dht11-sensors');
 const Repository = require('../db/repository');
 const config = require('../../config');
 
-function measure() {
-    let indoor = TemperatureSensor.read(TemperatureSensor.IndoorSensor);
-    let outdoor = TemperatureSensor.read(TemperatureSensor.IndoorSensor);
-    let timestamp = Date.now();
+mongoose.connect(config.databaseUrl, {useMongoClient: true}, (err) => {
+    if (err) {
+        console.error("#Scheduler: Unable to connect to db. Exiting...", err);
+        exit(-1);
+    } else {
+        console.log("#Scheduler: Established connection to db: " + config.databaseUrl);
+    }
+});
 
-    Repository.saveTemperature(Repository.TemperatureType.INDOOR, indoor.temperature, timestamp)
-        .then(() => {
-            return Repository.saveTemperature(Repository.TemperatureType.OUTDOOR, outdoor.temperature, timestamp);
+function readAndSave(sensor){
+	TemperatureSensor.read(sensor)
+		.then((temperature) => {
+			let timestamp = Date.now();
+			return Repository.saveTemperature(sensor.name, temperature, timestamp);
+		})
+		.then(() => {
+            console.log("#Scheduler: " + sensor.name +" temperature saved successfully.");
         })
-        .then(() => {
-            console.log("Scheduler: temperatures saved successfully");
-        });
-
+        .catch((err) => {
+			console.error("#Scheduler: Unable to save temperature.", err);
+		});
 }
 
-let job;
+function measure() {
+	readAndSave(TemperatureSensor.IndoorSensor);
+	readAndSave(TemperatureSensor.OutdoorSensor);
+}
+
+let job = undefined;
 
 process.on('message', (msg) => {
     switch (msg) {
         case "START":
-            job = setInterval(measure, config.schedulerMinutes * 60 * 10e3);
+			console.log("#Scheduler: Recieved 'START' message, starting with interval = " + config.schedulerSeconds + " seconds.");
+            job = setInterval(measure, config.schedulerSeconds * 1000);
             //job = setInterval(measure, 10);
             break;
         case "END":
+			console.log("#Scheduler: Recieved 'END' message");
             clearInterval(job);
+            exit(0);
             break;
     }
 });

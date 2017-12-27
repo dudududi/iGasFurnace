@@ -15,10 +15,17 @@ class Repository {
             let temperatureObj = new Temperature({
                 type: type, value: temperature, timestamp: timestamp
             });
+            console.log("Saving temp " + temperature + " " + type + " " + timestamp);
             temperatureObj.save((err) => {
-                if (err) reject(err);
+                if (err) {
+					console.error("Smuteczek", err);
+					reject(err);
+				}
                 else resolve();
-            });
+            })
+            .catch((err) => {
+				console.log("Smuteczek2", err);
+			});
         }));
     }
 
@@ -94,7 +101,7 @@ class Repository {
     }
 
     static get TemperatureType() {
-        return new TemperatureType();
+        return TemperatureType;
     }
 }
 

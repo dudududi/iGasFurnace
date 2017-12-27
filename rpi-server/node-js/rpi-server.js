@@ -6,6 +6,8 @@ const rest = require('./server/rest-api');
 const Repository = require('./db/repository');
 const { fork } = require('child_process');
 
+mongoose.Promise = global.Promise;
+
 let scheduler;
 
 mongoose.connect(config.databaseUrl, {useMongoClient: true}, (err) => {
