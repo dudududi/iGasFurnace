@@ -1,5 +1,6 @@
 const Temperature = require('./schema/temperature');
 const Consumption = require('./schema/consumption');
+const FurnaceState = require('./schema/furnace-state');
 
 class Repository {
 
@@ -101,11 +102,26 @@ class Repository {
     }
 
     getFurnaceState() {
-        return this.isFurnaceEnabled;
+         return new Promise(function (resolve, reject) {
+             FurnaceState.findOne({one: 'one'}, function (err, doc) {
+                 if (err) reject(err);
+                 else resolve(doc.state);
+             })
+         });
     }
 
     setFurnaceState(value) {
-        this.isFurnaceEnabled = value;
+        return new Promise(function (resolve, reject) {
+            let query = {'one': 'one'};
+            let newData = {
+                state: value,
+                one: 'one'
+            };
+            FurnaceState.findOneAndUpdate(query, newData, {upsert: true}, function (err, doc) {
+                if (err) reject(err);
+                else resolve();
+            });
+        });
     }
 
     get TemperatureType() {

@@ -58,8 +58,10 @@ function defineApi(repository, scheduler) {
 
     router.route('/current/furnace/state')
         .get(function (req, res) {
-            let status = repository.getFurnaceState();
-            res.status(200).json({status: status});
+            repository.getFurnaceState()
+                .then((status) => {
+                    res.status(200).json({status: status});
+                });
         });
 
     // TODO: remove below code, for test purposes only
