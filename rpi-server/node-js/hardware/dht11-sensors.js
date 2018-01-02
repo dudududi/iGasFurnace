@@ -31,14 +31,14 @@ class TemperatureSensor {
     static get IndoorSensor() {
         return {
             name: "indoor",
-            pin: 17
+            pin: 5
         };
     }
 
     static get OutdoorSensor() {
         return {
             name: "outdoor",
-            pin: 17
+            pin: 6
         };
     }
 }

@@ -4,6 +4,7 @@ const config = require('../config');
 const server = require('./server/server-utils');
 const rest = require('./server/rest-api');
 const Repository = require('./db/repository');
+const HardwareController = require('./hardware/hardware-controller');
 const { fork } = require('child_process');
 
 mongoose.Promise = global.Promise;
@@ -21,13 +22,14 @@ mongoose.connect(config.databaseUrl, {useMongoClient: true}, (err) => {
 
 
 function start() {
+	scheduler = fork('node-js/hardware/measurement-scheduler.js');
     server.configure("8080");
-    rest.configure(Repository);
-    scheduler = fork('node-js/hardware/measurement-scheduler.js');
+    rest.configure(Repository, scheduler);
     scheduler.send('START');
 }
 
 function exit() {
+	HardwareController.cleanup();
     console.log("Stopping scheduler...");
     scheduler.send("STOP");
     process.exit(0);

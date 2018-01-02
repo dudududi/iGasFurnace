@@ -3,7 +3,7 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const app = require('./server-utils').serverApp;
 
-function defineApi(repository) {
+function defineApi(repository, scheduler) {
     router.route('/temperatures/outdoor')
         .get(function (req, res) {
             let timestampFrom = req.query.timestampFrom;
@@ -26,7 +26,7 @@ function defineApi(repository) {
                 });
         })
         .post(function (req, res) {
-            // TODO: set wanted interior temp here with some rpi service ?
+            scheduler.send(req.body.value.toString());
             res.status(200).json({status: "ok"});
         });
 
@@ -51,11 +51,11 @@ function defineApi(repository) {
         });
 }
 
-function configure(repository) {
+function configure(repository, scheduler) {
     app.use('/api', router);
     router.use(bodyParser.urlencoded({extended: false}));
     router.use(bodyParser.json());
-    defineApi(repository);
+    defineApi(repository, scheduler);
 }
 
 module.exports = {

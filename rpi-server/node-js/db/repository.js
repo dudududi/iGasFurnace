@@ -15,16 +15,14 @@ class Repository {
             let temperatureObj = new Temperature({
                 type: type, value: temperature, timestamp: timestamp
             });
-            console.log("Saving temp " + temperature + " " + type + " " + timestamp);
             temperatureObj.save((err) => {
                 if (err) {
-					console.error("Smuteczek", err);
 					reject(err);
 				}
                 else resolve();
             })
             .catch((err) => {
-				console.log("Smuteczek2", err);
+				reject(err);
 			});
         }));
     }
@@ -45,11 +43,9 @@ class Repository {
                 .sort("timestamp");
             if (timestampFrom) {
                 query = query.where('timestamp').gt(timestampFrom);
-                console.log("timestampFrom " + timestampFrom);
             }
             if (timestampTo) {
                 query = query.where('timestamp').lt(timestampTo);
-                console.log("timestampTo " + timestampTo);
             }
             query.exec((err, results) => {
                 if (err) reject(err);

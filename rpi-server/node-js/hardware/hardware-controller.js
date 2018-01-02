@@ -1,28 +1,22 @@
-const TemperatureSensor = require('./dht11-sensors');
 const Gpio = require('onoff').Gpio;
-const ReedSwitch = new Gpio(6, 'in');
-const GasFurnaceSwitch = new Gpio(20, 'out');
+const ReedSwitch = new Gpio(4, 'in', 'falling', {debounceTimeout: 200});
+const GasFurnaceSwitch = new Gpio(18, 'out');
 
 class HardwareController{
-    _desiredOutdoorTemperature;
-
-    get currentIndoorTemperature() {
-        return TemperatureSensor.read(TemperatureSensor.IndoorSensor);
-    }
-
-    set desiredIndoorTemperature(value) {
-        this._desiredOutdoorTemperature = value;
-    }
-
-    get currentOutdoorTemperature() {
-        return TemperatureSensor.read(TemperatureSensor.OutdoorSensor);
-    }
-
-    set gasFurnaceState(value) {
-        GasFurnaceSwitch.writeSync(value); // TODO: probably move to scheduler
-    }
-
-    onConsumptionChange(callback) {
+    static onConsumptionChange(callback) {
+		console.log("Watching reed sensor...");
         ReedSwitch.watch(callback)
     }
+    
+    static cleanup() {
+		console.log("Unexporting hardware...");
+		ReedSwitch.unexport();
+		GasFurnaceSwitch.unexport();
+	}
+	
+	static changeFurnaceState(value) {
+		GasFurnaceSwitch.writeSync(value);
+	}
 }
+
+module.exports = HardwareController;
