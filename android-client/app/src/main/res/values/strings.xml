@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Gas Furnace</string>
+    <string name="activity_controller_desc">
+        Tutaj możesz kontrolować temperaturę w pomieszczeniu poprzez zmianę zadanej temperatury na termostacie
+    </string>
+
+    <string name="activity_controller_current_temperature_label">Obecna temperatura:</string>
+    <string name="activity_controller_current_temperature_value">%1$d °C</string>
+    <string name="activity_controller_current_temperature_default_value">0 °C</string>
+    <string name="activity_controller_set_temperature_label">Zadana temperatura:</string>
+    <string name="activity_controller_set_temperature_value">%1$d °C</string>
+    <string name="activity_controller_set_temperature_default_value">0 °C</string>
+    <string name="activity_controller_furnace_state_label">Stan termostatu:</string>
+    <string name="activity_controller_furnace_state_on_value">załączony</string>
+    <string name="activity_controller_furnace_state_off_value">wyłączony</string>
+    <string name="activity_controller_data_is_loading">Czekaj, trwa pobieranie danych z kontrolera...</string>
+    <string name="activity_controller_update_temperature_label">Update</string>
+
+    <string name="activity_summary_desc">
+        Tutaj możesz sprawdzić statystyki w oparciu o dane zarejestrowane przez termostat
+    </string>
+
+    <string name="activity_summary_select_date_button">Wybierz datę</string>
+
+</resources>
