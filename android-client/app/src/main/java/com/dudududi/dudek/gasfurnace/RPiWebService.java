@@ -4,15 +4,17 @@ import android.graphics.Color;
 import android.util.Log;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.*;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
+import okhttp3.*;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class RPiWebService {
 
-    private static final String BASE_URL = "http://192.168.2.6:8080/api/";
+    private static final String BASE_URL = "http://192.168.0.105:8080/api/";
 
     private OkHttpClient httpClient;
 
@@ -22,12 +24,29 @@ public class RPiWebService {
 
     public int getCurrentTemperature() {
         sleep();
-        //Request request =
+        Request request = new Request.Builder()
+                .url(BASE_URL + "current/temperature/indoor")
+                .build();
+        try {
+            Response response = httpClient.newCall(request).execute();
+            return getTemperatureFromJSON(response.body().string());
+        } catch (IOException e) {
+            Log.e("TAG","Unable to fetch data", e);
+        }
         return 20;
     }
 
     public int getSetTemperature() {
         sleep();
+        Request request = new Request.Builder()
+                .url(BASE_URL + "current/temperature/outdoor")
+                .build();
+        try {
+            Response response = httpClient.newCall(request).execute();
+            return getTemperatureFromJSON(response.body().string());
+        } catch (IOException e) {
+            Log.e("TAG","Unable to fetch data", e);
+        }
         return 22;
     }
 
@@ -38,6 +57,22 @@ public class RPiWebService {
 
     public void setTemperature(int newTemp) {
         sleep();
+        RequestBody requestBody = new FormBody.Builder()
+                .add("value", String.valueOf(newTemp))
+                .build();
+        Request request = new Request.Builder()
+                .url(BASE_URL + "temperatures/indoor")
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .post(requestBody)
+                .build();
+        try {
+            Response response = httpClient.newCall(request).execute();
+            if (response.isSuccessful()) {
+                Log.e("TAG", "Successfully changed temperature");
+            }
+        } catch (IOException e) {
+            Log.e("TAG","Unable to fetch data", e);
+        }
     }
 
     private void sleep() {
@@ -56,9 +91,16 @@ public class RPiWebService {
         return combinedData;
     }
 
-    private void getMonthlyStatiscits() {
-
+    private int getTemperatureFromJSON(String json) {
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            return jsonObject.getInt("value");
+        } catch (JSONException e) {
+            Log.e("TAG","Unable to fetch data", e);
+        }
+        return 20;
     }
+
 
 
     //mocks, to be removed

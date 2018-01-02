@@ -1,6 +1,8 @@
 const Temperature = require('./schema/temperature');
 const Consumption = require('./schema/consumption');
 
+let isFurnaceEnabled = false;
+
 class Repository {
 
     /**
@@ -94,6 +96,14 @@ class Repository {
                 else resolve(results);
             });
         });
+    }
+
+    static getFurnaceState() {
+        return isFurnaceEnabled;
+    }
+
+    static setFurnaceState(value) {
+        isFurnaceEnabled = value;
     }
 
     static get TemperatureType() {

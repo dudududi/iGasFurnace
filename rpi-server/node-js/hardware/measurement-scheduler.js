@@ -37,9 +37,11 @@ function measure() {
 	if (currentIndoorTemperature < termosthatValue) {
 		console.log("#Scheduler: Furnace enabled");
 		HardwareController.changeFurnaceState(1);
+		Repository.setFurnaceState(true);
 	} else {
 		console.log("#Scheduler: Furnace disabled");
 		HardwareController.changeFurnaceState(0);
+		Repository.setFurnaceState(false);
 	}
 }
 

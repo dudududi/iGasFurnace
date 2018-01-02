@@ -56,6 +56,12 @@ function defineApi(repository, scheduler) {
                 });
         });
 
+    router.route('/current/furnace/state')
+        .get(function (req, res) {
+            let status = repository.getFurnaceState();
+            res.status(200).json({status: status});
+        });
+
     // TODO: remove below code, for test purposes only
     router.route('/test/temperatures/:type')
         .post(function (req, res) {
