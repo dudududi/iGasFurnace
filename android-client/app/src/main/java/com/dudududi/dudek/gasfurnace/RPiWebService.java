@@ -22,7 +22,7 @@ public class RPiWebService {
 
     public int getCurrentTemperature() {
         sleep();
-        Request request =
+        //Request request =
         return 20;
     }
 
