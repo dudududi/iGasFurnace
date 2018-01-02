@@ -105,17 +105,18 @@ class Repository {
          return new Promise(function (resolve, reject) {
              FurnaceState.findOne({one: 'one'}, function (err, doc) {
                  if (err) reject(err);
-                 else resolve(doc.state);
+                 else resolve(doc);
              })
          });
     }
 
-    setFurnaceState(value) {
+    setFurnaceState(isEnabled, thermostatTemperature) {
         return new Promise(function (resolve, reject) {
             let query = {'one': 'one'};
             let newData = {
-                state: value,
-                one: 'one'
+                state: isEnabled,
+                one: 'one',
+                thermostat: thermostatTemperature
             };
             FurnaceState.findOneAndUpdate(query, newData, {upsert: true}, function (err, doc) {
                 if (err) reject(err);

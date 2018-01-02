@@ -39,12 +39,13 @@ public class RPiWebService {
     public int getSetTemperature() {
         sleep();
         Request request = new Request.Builder()
-                .url(BASE_URL + "current/temperature/outdoor")
+                .url(BASE_URL + "current/furnace/state")
                 .build();
         try {
             Response response = httpClient.newCall(request).execute();
-            return getTemperatureFromJSON(response.body().string());
-        } catch (IOException e) {
+            JSONObject jsonObject = new JSONObject(response.body().string());
+            return jsonObject.getInt("thermostat");
+        } catch (IOException | JSONException e) {
             Log.e("TAG","Unable to fetch data", e);
         }
         return 22;
@@ -58,7 +59,7 @@ public class RPiWebService {
         try {
             Response response = httpClient.newCall(request).execute();
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return jsonObject.getBoolean("status");
+            return jsonObject.getBoolean("state");
         } catch (IOException | JSONException e) {
             Log.e("TAG","Unable to fetch data", e);
         }

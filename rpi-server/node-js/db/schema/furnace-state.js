@@ -3,6 +3,7 @@ let Schema = mongoose.Schema;
 
 let state = new Schema({
     state: Boolean,
+    thermostat: Number,
     one: String
 });
 
