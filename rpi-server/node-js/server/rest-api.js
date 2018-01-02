@@ -40,6 +40,22 @@ function defineApi(repository, scheduler) {
                 })
         });
 
+    router.route('/current/temperature/indoor')
+        .get(function (req, res) {
+            repository.getTemperatures(repository.TemperatureType.INDOOR, undefined, undefined)
+                .then((results) => {
+                    res.status(200).json(results.pop());
+                });
+        });
+
+    router.route('/current/temperature/outdoor')
+        .get(function (req, res) {
+            repository.getTemperatures(repository.TemperatureType.OUTDOOR, undefined, undefined)
+                .then((results) => {
+                    res.status(200).json(results.pop());
+                });
+        });
+
     // TODO: remove below code, for test purposes only
     router.route('/test/temperatures/:type')
         .post(function (req, res) {

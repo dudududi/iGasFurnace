@@ -4,14 +4,25 @@ import android.graphics.Color;
 import android.util.Log;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.*;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 public class RPiWebService {
 
+    private static final String BASE_URL = "http://192.168.2.6:8080/api/";
+
+    private OkHttpClient httpClient;
+
+    public RPiWebService() {
+        httpClient = new OkHttpClient();
+    }
+
     public int getCurrentTemperature() {
         sleep();
+        Request request =
         return 20;
     }
 
