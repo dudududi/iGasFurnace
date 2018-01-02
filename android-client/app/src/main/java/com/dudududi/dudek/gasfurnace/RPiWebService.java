@@ -52,6 +52,16 @@ public class RPiWebService {
 
     public boolean getFurnaceState() {
         sleep();
+        Request request = new Request.Builder()
+                .url(BASE_URL + "current/furnace/state")
+                .build();
+        try {
+            Response response = httpClient.newCall(request).execute();
+            JSONObject jsonObject = new JSONObject(response.body().string());
+            return jsonObject.getBoolean("status");
+        } catch (IOException | JSONException e) {
+            Log.e("TAG","Unable to fetch data", e);
+        }
         return false;
     }
 

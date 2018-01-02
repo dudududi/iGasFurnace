@@ -1,9 +1,11 @@
 const Temperature = require('./schema/temperature');
 const Consumption = require('./schema/consumption');
 
-let isFurnaceEnabled = false;
-
 class Repository {
+
+    constructor() {
+        this.isFurnaceEnabled = false;
+    }
 
     /**
      * Saves current temperature at given date and time to db.
@@ -12,7 +14,7 @@ class Repository {
      * @param {Number} temperature's value to be saved, mandatory
      * @param {Number} timestamp of temperature's which is being saved (usually Date.now()), mandatory
      */
-    static saveTemperature(type, temperature, timestamp) {
+     saveTemperature(type, temperature, timestamp) {
         return new Promise(((resolve, reject) => {
             let temperatureObj = new Temperature({
                 type: type, value: temperature, timestamp: timestamp
@@ -36,7 +38,7 @@ class Repository {
      * @param {Number} timestampFrom - date from which temperatures should be returned in timestamp format, optional
      * @param {Number} timestampTo - date to which temperatures should be returned in timestamp format, optional.
      */
-    static getTemperatures(type, timestampFrom, timestampTo) {
+     getTemperatures(type, timestampFrom, timestampTo) {
         return new Promise(function (resolve, reject) {
             let query = Temperature
                 .find({})
@@ -62,7 +64,7 @@ class Repository {
      * @param {Number} consumption to being updated, mandatory
      * @param {Number} timestamp of consumption, mandatory
      */
-    static updateConsumption(consumption, timestamp) {
+     updateConsumption(consumption, timestamp) {
         return new Promise(function (resolve, reject) {
             let consumptionObj = new Consumption({
                 value: consumption, timestamp: timestamp
@@ -80,7 +82,7 @@ class Repository {
      * @param timestampFrom - date from which consumption should be returned in timestamp format, mandatory
      * @param timestampTo - date to which consumption should be returned in timestamp format, optional.
      */
-    static getConsumption(timestampFrom, timestampTo) {
+     getConsumption(timestampFrom, timestampTo) {
         return new Promise(function (resolve, reject) {
             let query = Consumption.find({})
                 .select({"_id": 0, "__v": 0})
@@ -98,15 +100,15 @@ class Repository {
         });
     }
 
-    static getFurnaceState() {
-        return isFurnaceEnabled;
+    getFurnaceState() {
+        return this.isFurnaceEnabled;
     }
 
-    static setFurnaceState(value) {
-        isFurnaceEnabled = value;
+    setFurnaceState(value) {
+        this.isFurnaceEnabled = value;
     }
 
-    static get TemperatureType() {
+    get TemperatureType() {
         return TemperatureType;
     }
 }
@@ -120,4 +122,4 @@ class TemperatureType {
         return "outdoor";
     }
 }
-module.exports = Repository;
+module.exports = new Repository();
