@@ -17,7 +17,8 @@ public class ControllerActivity extends AppCompatActivity {
     private View controllerView;
     private RPiWebService webService;
 
-    private TextView currentTemperatureLabel;
+    private TextView currentTemperatureIndoorLabel;
+    private TextView currentTemperatureOutdoorLabel;
     private NumberPicker setTemperatureLabel;
     private TextView furnaceStateLabel;
     private Button updateTemperatureButton;
@@ -30,7 +31,8 @@ public class ControllerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_controller);
         loadingView = findViewById(R.id.loadingView);
         controllerView = findViewById(R.id.controllerView);
-        currentTemperatureLabel = (TextView) findViewById(R.id.activity_controller_current_temperature_value);
+        currentTemperatureIndoorLabel = (TextView) findViewById(R.id.activity_controller_current_temperature_indoor_value);
+        currentTemperatureOutdoorLabel = (TextView) findViewById(R.id.activity_controller_current_temperature_outdoor_value);
         setTemperatureLabel = (NumberPicker) findViewById(R.id.activity_controller_set_temperature_value);
         furnaceStateLabel = (TextView) findViewById(R.id.activity_controller_furnace_state_value);
         updateTemperatureButton = (Button) findViewById(R.id.activity_controller_update_set_temperature);
@@ -82,7 +84,8 @@ public class ControllerActivity extends AppCompatActivity {
         @Override
         protected Results doInBackground(Void... voids) {
             Results results = new Results();
-            results.currentTemperature = webService.getCurrentTemperature();
+            results.currentTemperatureIndoor = webService.getCurrentTemperatureIndoor();
+            results.currentTemperatureOutdoor = webService.getCurrentTemperatureOutdoor();
             results.setTemperature = webService.getSetTemperature();
             results.furnaceState = webService.getFurnaceState();
             return results;
@@ -92,14 +95,16 @@ public class ControllerActivity extends AppCompatActivity {
         protected void onPostExecute(Results result) {
             loadingView.setVisibility(View.GONE);
             controllerView.setVisibility(View.VISIBLE);
-            currentTemperatureLabel.setText(String.format(getString(R.string.activity_controller_current_temperature_value), result.currentTemperature));
+            currentTemperatureIndoorLabel.setText(String.format(getString(R.string.activity_controller_current_temperature_value), result.currentTemperatureIndoor));
+            currentTemperatureOutdoorLabel.setText(String.format(getString(R.string.activity_controller_current_temperature_value), result.currentTemperatureOutdoor));
             setTemperatureLabel.setValue(result.setTemperature);
             furnaceStateLabel.setText(getString(result.furnaceState ? R.string.activity_controller_furnace_state_on_value : R.string.activity_controller_furnace_state_off_value));
             lastSetTemperature = result.setTemperature;
         }
 
         class Results {
-            private int currentTemperature;
+            private int currentTemperatureIndoor;
+            private int currentTemperatureOutdoor;
             private int setTemperature;
             private boolean furnaceState;
         }

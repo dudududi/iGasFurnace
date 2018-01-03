@@ -52,9 +52,9 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/activity_controller_current_temperature_label"
-                    android:id="@+id/activity_controller_current_temperature_label"
-                    tools:text="@string/activity_controller_current_temperature_label"
+                    android:text="@string/activity_controller_current_indoor_temperature_label"
+                    android:id="@+id/activity_controller_current_temperature_indoor_label"
+                    tools:text="@string/activity_controller_current_indoor_temperature_label"
                     android:layout_margin="10dp"
                     android:textSize="18sp"
                     android:textStyle="bold|italic"/>
@@ -63,7 +63,31 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="5"
-                    android:id="@+id/activity_controller_current_temperature_value"
+                    android:id="@+id/activity_controller_current_temperature_indoor_value"
+                    android:text="@string/activity_controller_current_temperature_default_value"
+                    tools:text="@string/activity_controller_current_temperature_default_value"
+                    android:layout_margin="10dp"
+                    android:textSize="18sp"
+                    android:textStyle="bold|italic"
+                    android:gravity="end"
+                    android:layout_gravity="center"/>
+        </TableRow>
+        <TableRow android:layout_width="match_parent" android:layout_height="match_parent">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/activity_controller_current_outdoor_temperature_label"
+                    android:id="@+id/activity_controller_current_temperature_outdoor_label"
+                    tools:text="@string/activity_controller_current_outdoor_temperature_label"
+                    android:layout_margin="10dp"
+                    android:textSize="18sp"
+                    android:textStyle="bold|italic"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="5"
+                    android:id="@+id/activity_controller_current_temperature_outdoor_value"
                     android:text="@string/activity_controller_current_temperature_default_value"
                     tools:text="@string/activity_controller_current_temperature_default_value"
                     android:layout_margin="10dp"

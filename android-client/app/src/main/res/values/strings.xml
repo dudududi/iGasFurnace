@@ -4,7 +4,8 @@
         Tutaj możesz kontrolować temperaturę w pomieszczeniu poprzez zmianę zadanej temperatury na termostacie
     </string>
 
-    <string name="activity_controller_current_temperature_label">Obecna temperatura:</string>
+    <string name="activity_controller_current_indoor_temperature_label">Obecna temperatura wewn.:</string>
+    <string name="activity_controller_current_outdoor_temperature_label">Obecna temperatura zewn.:</string>
     <string name="activity_controller_current_temperature_value">%1$d °C</string>
     <string name="activity_controller_current_temperature_default_value">0 °C</string>
     <string name="activity_controller_set_temperature_label">Zadana temperatura:</string>

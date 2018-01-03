@@ -22,7 +22,7 @@ public class RPiWebService {
         httpClient = new OkHttpClient();
     }
 
-    public int getCurrentTemperature() {
+    public int getCurrentTemperatureIndoor() {
         sleep();
         Request request = new Request.Builder()
                 .url(BASE_URL + "current/temperature/indoor")
@@ -36,8 +36,22 @@ public class RPiWebService {
         return 20;
     }
 
-    public int getSetTemperature() {
+    public int getCurrentTemperatureOutdoor() {
         sleep();
+        Request request = new Request.Builder()
+                .url(BASE_URL + "current/temperature/outdoor")
+                .build();
+        try {
+            Response response = httpClient.newCall(request).execute();
+            return getTemperatureFromJSON(response.body().string());
+        } catch (IOException e) {
+            Log.e("TAG","Unable to fetch data", e);
+        }
+        return 20;
+    }
+
+    public int getSetTemperature() {
+        //sleep();
         Request request = new Request.Builder()
                 .url(BASE_URL + "current/furnace/state")
                 .build();
@@ -52,7 +66,7 @@ public class RPiWebService {
     }
 
     public boolean getFurnaceState() {
-        sleep();
+        //sleep();
         Request request = new Request.Builder()
                 .url(BASE_URL + "current/furnace/state")
                 .build();
@@ -122,7 +136,7 @@ public class RPiWebService {
         ArrayList<Entry> entries = new ArrayList<Entry>();
 
         for (int index = 0; index < itemcount; index++)
-            entries.add(new Entry(index + 0.5f, getRandom(15, 5)));
+            entries.add(new Entry(index + 0.5f, getRandom(5, 7)));
 
         LineDataSet set = new LineDataSet(entries, "Zużycie gazu");
         set.setColor(Color.rgb(240, 238, 70));
@@ -147,9 +161,9 @@ public class RPiWebService {
         ArrayList<BarEntry> entries2 = new ArrayList<BarEntry>();
 
         for (int index = 0; index < itemcount; index++) {
-            entries1.add(new BarEntry(0, getRandom(25, 25)));
+            entries1.add(new BarEntry(0, getRandom(10, 5)));
 
-            entries2.add(new BarEntry(0, getRandom(25, 25)));
+            entries2.add(new BarEntry(0, getRandom(5, 20)));
         }
 
         BarDataSet set1 = new BarDataSet(entries1, "Temp zewn.");

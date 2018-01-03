@@ -100,7 +100,7 @@ public class SummaryActivity extends AppCompatActivity implements DatePickerDial
             @Override
             public void onClick(View view) {
                 DatePickerDialog datePickerDialog;
-                datePickerDialog = new DatePickerDialog(SummaryActivity.this, SummaryActivity.this, 2018, 1, 3);
+                datePickerDialog = new DatePickerDialog(SummaryActivity.this, SummaryActivity.this, 2018, 0, 3);
                 datePickerDialog.show();
             }
         });
